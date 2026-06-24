@@ -516,13 +516,10 @@
       const val = this.getInputValue(0);
       if (this.ledLight) {
         this.ledLight.classList.toggle("high", val === 1);
-        this.ledLight.classList.remove("red-led", "green-led", "blue-led");
+        this.ledLight.classList.remove("green-led", "blue-led");
         if (val === 1) {
-          if (this.color === "#22C55E")
-            this.ledLight.classList.add("green-led");
-          else if (this.color === "#0A84FF")
-            this.ledLight.classList.add("blue-led");
-          else this.ledLight.classList.add("red-led");
+          if (this.color === "#22C55E") this.ledLight.classList.add("green-led");
+          else if (this.color === "#0A84FF") this.ledLight.classList.add("blue-led");
         }
       }
     }
@@ -1493,7 +1490,6 @@
         html +=
           '<div class="prop-group"><label>Color</label><input type="color" id="prop-color" value="' +
           (comp.color || "#EF4444") +
-```javascript
           '" /></div>';
       }
       if (comp.type === "lamp") {
@@ -1606,9 +1602,11 @@
       const saved = JSON.parse(localStorage.getItem("circuits") || "{}");
       const names = Object.keys(saved);
       if (names.length === 0) {
-        list.innerHTML = '<div class="empty">No saved circuits found.</div>';
+        list.textContent = "No saved circuits found.";
+        list.classList.add("empty");
       } else {
         list.innerHTML = "";
+        list.classList.remove("empty");
         for (const name of names) {
           const item = saved[name];
           const div = document.createElement("div");
