@@ -60,21 +60,23 @@ The `dist/` folder after `npm run build` contains a fully static site. Deploy it
 ├── vite.config.js          — Vite configuration
 ├── tailwind.config.js      — Tailwind theme (colors, fonts, keyframes)
 ├── postcss.config.js       — PostCSS (Tailwind + autoprefixer)
-├── src/
-│   ├── main.jsx            — React entry point
-│   ├── index.css           — Tailwind directives + custom component styles
-│   ├── App.jsx             — Root layout (Toolbar, Sidebar, Workspace, etc.)
-│   ├── hooks/
-│   │   └── useCircuit.js   — Core hook: classes, simulation, state, events
-│   └── components/
-│       ├── Toolbar.jsx         — Action buttons, clock toggle, zoom controls
-│       ├── Sidebar.jsx         — Component library grouped by type
-│       ├── Workspace.jsx       — SVG wire layer + circuit component layer
-│       ├── CircuitComponent.jsx — Per-type component visuals and pins
-│       ├── PropertiesPanel.jsx — Context-sensitive property editor
-│       ├── SaveModal.jsx       — Save circuit dialog
-│       └── LoadModal.jsx       — Load/delete circuit dialog
-└── public/
+├── .gitignore
+├── public/
+│   └── favicon.svg         — Browser tab icon
+└── src/
+    ├── main.jsx            — React entry point
+    ├── index.css           — Tailwind directives + custom component styles
+    ├── App.jsx             — Root layout (responsive sidebar/workspace/properties)
+    ├── hooks/
+    │   └── useCircuit.js   — Core hook: classes, simulation, state, events
+    └── components/
+        ├── Toolbar.jsx         — Action buttons, clock toggle, zoom controls
+        ├── Sidebar.jsx         — Component library grouped by type
+        ├── Workspace.jsx       — SVG wire layer + circuit component layer
+        ├── CircuitComponent.jsx — Per-type component visuals and pins
+        ├── PropertiesPanel.jsx — Context-sensitive property editor
+        ├── SaveModal.jsx       — Save circuit dialog
+        └── LoadModal.jsx       — Load/delete circuit dialog
 ```
 
 ## Architecture
@@ -83,8 +85,8 @@ The `dist/` folder after `npm run build` contains a fully static site. Deploy it
 
 - **`Pin`** — Input or output terminal on a component. Stores value, tracks connected wires.
 - **`Wire`** — Connection between an output pin and an input pin. SVG bezier path, color-coded by signal state.
-- **`Component`** — Base class for all circuit elements. Subclasses: `GateComponent`, `ToggleSwitch`, `PushButton`, `Clock`, `LED`, `Lamp`, `SevenSegment`, `HalfAdder`, `FullAdder`, `Multiplexer`, `Decoder`, `Encoder`.
-- **`createComponent()`** — Factory that returns the appropriate component subclass given a type string.
+- **`Component`** — Single class for all circuit elements (gates, I/O, displays). A `createComponent()` factory sets pin layout per type.
+- **`createComponent()`** — Factory that returns a configured `Component` with correct pins for the given type string.
 
 ### Simulation Engine
 

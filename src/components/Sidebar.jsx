@@ -49,9 +49,19 @@ const sections = [
   },
 ]
 
-export default function Sidebar({ circuit }) {
+export default function Sidebar({ circuit, onClose }) {
   return (
     <aside className="w-[240px] bg-[#11141c] border-r border-white/[0.07] overflow-y-auto overscroll-contain shrink-0 pt-3.5 pb-5 flex flex-col scrollbar-thin" aria-label="Component library">
+      {onClose && (
+        <div className="flex items-center justify-between px-[18px] pb-3 border-b border-white/[0.07] mb-3 mx-2">
+          <h3 className="text-[10px] font-bold uppercase tracking-[0.1em] text-[#6b7794]">Components</h3>
+          <button onClick={onClose} className="p-1 rounded-[6px] text-[#6b7794] hover:text-[#f4f6fb] hover:bg-white/[0.05] transition-all" aria-label="Close component library">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+      )}
       {sections.map((section) => (
         <div key={section.title} className="mb-3.5">
           <h3 className="text-[10px] font-bold uppercase tracking-[0.1em] text-[#6b7794] px-[18px] py-[6px_18px_8px]">

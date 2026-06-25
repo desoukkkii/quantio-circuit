@@ -1,10 +1,17 @@
-export default function PropertiesPanel({ circuit }) {
+export default function PropertiesPanel({ circuit, onClose }) {
   const comp = circuit.propertiesComp
 
   return (
     <aside className="w-[280px] bg-[#11141c] border-l border-white/[0.07] shrink-0 flex flex-col overflow-y-auto scrollbar-thin" aria-label="Properties">
-      <div className="px-[18px] py-4 border-b border-white/[0.07] sticky top-0 bg-[#11141c] z-[1]">
+      <div className="flex items-center justify-between px-[18px] py-4 border-b border-white/[0.07] sticky top-0 bg-[#11141c] z-[1]">
         <h3 className="text-[11px] font-bold uppercase tracking-[0.1em] text-[#6b7794]">Properties</h3>
+        {onClose && (
+          <button onClick={onClose} className="p-1 rounded-[6px] text-[#6b7794] hover:text-[#f4f6fb] hover:bg-white/[0.05] transition-all" aria-label="Close properties panel">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        )}
       </div>
       <div className="p-[18px] flex-1">
         {!comp ? (
