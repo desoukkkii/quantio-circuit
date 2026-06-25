@@ -1,6 +1,6 @@
 # Digital Logic Circuit Simulator
 
-An interactive digital logic circuit simulator built with vanilla HTML, CSS, and JavaScript. Design, simulate, and visualize digital circuits directly in your browser — no dependencies, no build step, no server required.
+An interactive digital logic circuit simulator built with **React 18**, **Vite**, and **Tailwind CSS v3**. Design, simulate, and visualize digital circuits directly in your browser.
 
 ## Features
 
@@ -13,42 +13,92 @@ An interactive digital logic circuit simulator built with vanilla HTML, CSS, and
 - **Save & Load** — Save circuits to `localStorage` and load them later. Saved circuits persist across page refreshes.
 - **Example Circuits** — Pre-built examples: Half Adder, Full Adder, XOR from basic gates, SR Latch, 4-bit Counter demo.
 
-## Usage
+## Getting Started
 
-Open `index.html` in any modern browser. No server or installation required.
+### Prerequisites
 
-If `localStorage` is blocked (some browsers restrict it on `file://` protocol), save/load will be unavailable — use a local HTTP server instead:
+- Node.js 18+ and npm
 
+### Install
+
+```bash
+npm install
 ```
-npx serve .
+
+### Development
+
+```bash
+npm run dev
 ```
+
+Opens the app at `http://localhost:5173/` with hot module replacement.
+
+### Build
+
+```bash
+npm run build
+```
+
+Produces an optimized build in the `dist/` folder.
+
+### Preview
+
+```bash
+npm run preview
+```
+
+Serves the production build locally for testing.
+
+## Deploy
+
+The `dist/` folder after `npm run build` contains a fully static site. Deploy it to any static hosting provider (Vercel, Netlify, GitHub Pages, Cloudflare Pages, etc.).
 
 ## Project Structure
 
 ```
-├── index.html      — HTML shell (toolbar, sidebar, workspace, modals)
-├── style.css       — Full dark theme and component styling (~18 KB)
-└── script.js       — All application logic (~61 KB, 1500+ lines)
+├── index.html              — Vite entry HTML
+├── vite.config.js          — Vite configuration
+├── tailwind.config.js      — Tailwind theme (colors, fonts, keyframes)
+├── postcss.config.js       — PostCSS (Tailwind + autoprefixer)
+├── src/
+│   ├── main.jsx            — React entry point
+│   ├── index.css           — Tailwind directives + custom component styles
+│   ├── App.jsx             — Root layout (Toolbar, Sidebar, Workspace, etc.)
+│   ├── hooks/
+│   │   └── useCircuit.js   — Core hook: classes, simulation, state, events
+│   └── components/
+│       ├── Toolbar.jsx         — Action buttons, clock toggle, zoom controls
+│       ├── Sidebar.jsx         — Component library grouped by type
+│       ├── Workspace.jsx       — SVG wire layer + circuit component layer
+│       ├── CircuitComponent.jsx — Per-type component visuals and pins
+│       ├── PropertiesPanel.jsx — Context-sensitive property editor
+│       ├── SaveModal.jsx       — Save circuit dialog
+│       └── LoadModal.jsx       — Load/delete circuit dialog
+└── public/
 ```
 
 ## Architecture
 
-### Classes
+### Classes (in `useCircuit.js`)
 
 - **`Pin`** — Input or output terminal on a component. Stores value, tracks connected wires.
 - **`Wire`** — Connection between an output pin and an input pin. SVG bezier path, color-coded by signal state.
 - **`Component`** — Base class for all circuit elements. Subclasses: `GateComponent`, `ToggleSwitch`, `PushButton`, `Clock`, `LED`, `Lamp`, `SevenSegment`, `HalfAdder`, `FullAdder`, `Multiplexer`, `Decoder`, `Encoder`.
-- **`Simulator`** — Queue-based propagation engine. Walks component graph from a changed node, re-evaluates, and propagates new values. Limits visits per component (5) to handle feedback loops.
-- **`Workspace`** — Manages the interactive canvas: component placement, wire creation, selection, drag, zoom/pan, serialization.
-- **`App`** — Top-level controller: initializes the workspace and simulator, wires up toolbar/sidebar/modals.
+- **`createComponent()`** — Factory that returns the appropriate component subclass given a type string.
 
-### Signal Flow
+### Simulation Engine
 
 1. User action changes a component's output (toggle, button press, clock tick, etc.)
-2. `Simulator.propagateFromComponent()` enqueues the changed component and its transitive fan-out
+2. `circuit.propagateFromComponent()` enqueues the changed component and its transitive fan-out
 3. Each component in the queue is re-evaluated; if its output changed, the new value is pushed through connected wires to downstream components
-4. `evaluateAll()` does a full re-evaluation: syncs wire values, evaluates input components, then iterates gates for up to 5 passes (or until stable)
+4. `circuit.evaluateAll()` does a full re-evaluation: syncs wire values, evaluates input components, then iterates gates for up to 5 passes (or until stable)
 
 ### Data Persistence
 
 Circuits are serialized to JSON and stored in `localStorage` under the key `circuits`. Each saved circuit stores component positions, labels, clock settings, wire topology, and viewport state.
+
+## Built With
+
+- [React 18](https://react.dev/)
+- [Vite 6](https://vitejs.dev/)
+- [Tailwind CSS v3](https://tailwindcss.com/)
