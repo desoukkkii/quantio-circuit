@@ -83,12 +83,12 @@ export default function Sidebar({ circuit, onClose }) {
   }, [search])
 
   return (
-    <aside className="w-[260px] bg-[#11141c] border-r border-white/[0.07] overflow-y-auto overscroll-contain shrink-0 pt-3 pb-5 flex flex-col scrollbar-thin" aria-label="Component library">
-      <div className="px-3 pb-3 border-b border-white/[0.07] mb-3 mx-2">
+    <aside className="w-[260px] bg-[#11141c] border-r border-white/[0.07] shrink-0 h-full flex flex-col overflow-hidden scrollbar-thin" aria-label="Component library">
+      <div className="shrink-0 px-3 pb-3 border-b border-white/[0.07] mx-2 pt-3">
         <div className="flex items-center justify-between mb-2.5">
           <h3 className="text-[10px] font-bold uppercase tracking-[0.1em] text-[#6b7794]">Components</h3>
           {onClose && (
-            <button onClick={onClose} className="p-1 rounded-[6px] text-[#6b7794] hover:text-[#f4f6fb] hover:bg-white/[0.05] transition-all" aria-label="Close component library">
+            <button onClick={onClose} className="p-1 rounded-[6px] text-[#6b7794] hover:text-[#f4f6fb] hover:bg-white/[0.05] transition-all btn-touch" aria-label="Close component library">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
               </svg>
@@ -104,12 +104,12 @@ export default function Sidebar({ circuit, onClose }) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search components..."
-            className="w-full pl-8 pr-3 py-[7px] text-[13px] bg-[#0f1218] border border-white/[0.07] rounded-[8px] text-[#f4f6fb] placeholder-[#6b7794] outline-none transition-all focus:border-blue-400 focus:shadow-[0_0_0_3px_rgba(96,165,250,0.18)]"
+            className="w-full pl-8 pr-3 py-[9px] text-[14px] bg-[#0f1218] border border-white/[0.07] rounded-[8px] text-[#f4f6fb] placeholder-[#6b7794] outline-none transition-all focus:border-blue-400 focus:shadow-[0_0_0_3px_rgba(96,165,250,0.18)]"
           />
           {search && (
             <button
               onClick={() => setSearch('')}
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 rounded text-[#6b7794] hover:text-[#f4f6fb]"
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded text-[#6b7794] hover:text-[#f4f6fb]"
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
@@ -118,70 +118,73 @@ export default function Sidebar({ circuit, onClose }) {
           )}
         </div>
       </div>
-      {filteredSections.map((section) => (
-        <div key={section.title} className="mb-2">
-          <h3 className="text-[10px] font-bold uppercase tracking-[0.1em] text-[#6b7794] px-[18px] py-[6px_18px_6px]">
-            {section.title}
-          </h3>
-          <div className="flex flex-col gap-0.5 px-2">
-            {section.items.map((item) => {
-              const isExample = 'example' in item
-              const isActive = !isExample && circuit.activeType === item.type
-              return (
-                <div
-                  key={item.label}
-                  tabIndex={0}
-                  role="button"
-                  onClick={() => {
-                    if (isExample) {
-                      circuit.loadExample(item.example)
-                      onClose?.()
-                    } else {
-                      if (circuit.activeType === item.type) {
-                        circuit.setActiveType(null)
-                      } else {
-                        circuit.setActiveType(item.type)
-                      }
-                    }
-                  }}
-                  className={`group flex items-center gap-2.5 relative px-3 py-[9px] text-[13px] cursor-pointer rounded-[6px] select-none transition-all duration-[180ms] ease-[cubic-bezier(0.4,0,0.2,1)] ${
-                    isExample
-                      ? 'hover:bg-green-500/8 active:bg-green-500/12'
-                      : isActive
-                        ? 'bg-blue-400/10'
-                        : 'hover:bg-white/[0.04] active:bg-white/[0.06]'
-                  }`}
-                >
-                  <span className={`shrink-0 w-7 h-7 rounded-[6px] flex items-center justify-center transition-all duration-[180ms] ${
-                    isExample
-                      ? 'bg-green-500/10 group-hover:bg-green-500/15'
-                      : isActive
-                        ? 'bg-blue-400/15'
-                        : 'bg-white/[0.04] group-hover:bg-white/[0.07]'
-                  }`}>
-                    {getIcon(item.icon || 'gate', isExample ? '#22c55e' : isActive ? '#60a5fa' : '#93a0bb')}
-                  </span>
-                  <span className={`font-medium transition-colors duration-[180ms] ${
-                    isExample
-                      ? 'text-green-400'
-                      : isActive
-                        ? 'text-blue-400'
-                        : 'text-[#93a0bb] group-hover:text-[#f4f6fb]'
-                  }`}>
-                    {item.label}
-                  </span>
-                </div>
-              )
-            })}
+      <div className="flex-1 overflow-y-auto overscroll-contain min-h-0 scrollbar-thin">
+        {filteredSections.length > 0 ? (
+          filteredSections.map((section) => (
+            <div key={section.title} className="mb-2">
+              <h3 className="text-[10px] font-bold uppercase tracking-[0.1em] text-[#6b7794] px-[18px] py-[6px_18px_6px]">
+                {section.title}
+              </h3>
+              <div className="flex flex-col gap-0.5 px-2">
+                {section.items.map((item) => {
+                  const isExample = 'example' in item
+                  const isActive = !isExample && circuit.activeType === item.type
+                  return (
+                    <div
+                      key={item.label}
+                      tabIndex={0}
+                      role="button"
+                      onClick={() => {
+                        if (isExample) {
+                          circuit.loadExample(item.example)
+                          onClose?.()
+                        } else {
+                          if (circuit.activeType === item.type) {
+                            circuit.setActiveType(null)
+                          } else {
+                            circuit.setActiveType(item.type)
+                          }
+                        }
+                      }}
+                      className={`group flex items-center gap-2.5 relative px-3 py-[9px] text-[13px] cursor-pointer rounded-[6px] select-none transition-all duration-[180ms] ease-[cubic-bezier(0.4,0,0.2,1)] ${
+                        isExample
+                          ? 'hover:bg-green-500/8 active:bg-green-500/12'
+                          : isActive
+                            ? 'bg-blue-400/10'
+                            : 'hover:bg-white/[0.04] active:bg-white/[0.06]'
+                      }`}
+                    >
+                      <span className={`shrink-0 w-7 h-7 rounded-[6px] flex items-center justify-center transition-all duration-[180ms] ${
+                        isExample
+                          ? 'bg-green-500/10 group-hover:bg-green-500/15'
+                          : isActive
+                            ? 'bg-blue-400/15'
+                            : 'bg-white/[0.04] group-hover:bg-white/[0.07]'
+                      }`}>
+                        {getIcon(item.icon || 'gate', isExample ? '#22c55e' : isActive ? '#60a5fa' : '#93a0bb')}
+                      </span>
+                      <span className={`font-medium transition-colors duration-[180ms] ${
+                        isExample
+                          ? 'text-green-400'
+                          : isActive
+                            ? 'text-blue-400'
+                            : 'text-[#93a0bb] group-hover:text-[#f4f6fb]'
+                      }`}>
+                        {item.label}
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="flex items-center justify-center h-full min-h-[120px] px-4">
+            <p className="text-[13px] text-[#6b7794] text-center">No components found.</p>
           </div>
-        </div>
-      ))}
-      {filteredSections.length === 0 && (
-        <div className="text-center py-8 px-4">
-          <p className="text-[13px] text-[#6b7794]">No components found.</p>
-        </div>
-      )}
-      <div className="mt-auto pt-3.5 border-t border-white/[0.07] mx-2">
+        )}
+      </div>
+      <div className="shrink-0 pt-3.5 pb-5 border-t border-white/[0.07] mx-2">
         <p className="text-[11.5px] text-[#6b7794] leading-relaxed px-3">
           Tip: tap a component, then tap the canvas to place. Drag from an output pin to wire it up.
         </p>

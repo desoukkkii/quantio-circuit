@@ -1,6 +1,6 @@
 export default function BottomBar({ circuit, onToggleSidebar, onToggleProperties }) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 md:hidden z-[100] flex items-center justify-around gap-1 px-2 py-1 bg-gradient-to-t from-[rgba(17,20,28,0.98)] to-[rgba(22,26,36,0.95)] backdrop-blur-md border-t border-white/[0.07] safe-area-bottom" aria-label="Mobile toolbar">
+    <nav className="fixed bottom-0 left-0 right-0 md:hidden z-[100] flex items-center justify-around gap-1 px-1 py-1.5 bg-gradient-to-t from-[rgba(17,20,28,0.98)] to-[rgba(22,26,36,0.95)] backdrop-blur-md border-t border-white/[0.07] safe-area-bottom" aria-label="Mobile toolbar">
       <BottomBarBtn onClick={onToggleSidebar} label="Components" active={false}>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" />
@@ -14,16 +14,24 @@ export default function BottomBar({ circuit, onToggleSidebar, onToggleProperties
       </BottomBarBtn>
 
       <BottomBarBtn onClick={circuit.toggleRun} label={circuit.isRunning ? 'Stop' : 'Run'} active={circuit.isRunning}>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M8 5v14l11-7z" />
-        </svg>
+        <div className="relative">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+          {circuit.isRunning && (
+            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-green-500 animate-ping" />
+          )}
+        </div>
       </BottomBarBtn>
 
-      <BottomBarBtn onClick={() => circuit.showSave()} label="Save" active={false}>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
-        </svg>
-      </BottomBarBtn>
+      <button
+        onClick={() => circuit.fitAll()}
+        className="flex flex-col items-center gap-0.5 px-2.5 py-2 rounded-[8px] border-none bg-transparent cursor-pointer transition-all duration-[180ms] min-w-0 text-[#6b7794] hover:text-[#f4f6fb] hover:bg-white/[0.05] active:scale-95"
+        aria-label="Fit to view"
+      >
+        <span className="text-[11px] font-semibold tabular-nums">{circuit.zoomLevel}</span>
+        <span className="text-[8px] font-semibold uppercase tracking-[0.05em]">Zoom</span>
+      </button>
 
       <BottomBarBtn onClick={onToggleProperties} label="Properties" active={false}>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -38,7 +46,7 @@ function BottomBarBtn({ onClick, label, children, active }) {
   return (
     <button
       onClick={onClick}
-      className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-[8px] border-none bg-transparent cursor-pointer transition-all duration-[180ms] min-w-0 ${
+      className={`flex flex-col items-center gap-0.5 px-2.5 py-2 rounded-[8px] border-none bg-transparent cursor-pointer transition-all duration-[180ms] min-w-0 ${
         active
           ? 'text-blue-400 scale-110'
           : 'text-[#6b7794] hover:text-[#f4f6fb] hover:bg-white/[0.05]'

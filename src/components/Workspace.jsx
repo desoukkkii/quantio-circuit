@@ -88,7 +88,7 @@ export default function Workspace({ circuit }) {
       </div>
 
       <div
-        className={`absolute left-1/2 bottom-6 md:bottom-6 -translate-x-1/2 z-[4] transition-all duration-300 ${
+        className={`absolute left-1/2 bottom-[72px] md:bottom-6 -translate-x-1/2 z-[4] transition-all duration-300 ${
           hintDismissed
             ? 'opacity-0 pointer-events-none translate-y-2'
             : 'opacity-0 animate-hint-in pointer-events-auto'

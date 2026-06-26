@@ -30,7 +30,7 @@ export default function App() {
         {sidebarOpen && (
           <div className="fixed inset-0 z-50 flex lg:hidden">
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-overlay-in" onClick={closeSidebar} />
-            <div className="relative h-full overflow-y-auto slide-from-left shadow-2xl">
+            <div className="relative h-full slide-from-left shadow-2xl">
               <Sidebar circuit={circuit} onClose={closeSidebar} />
             </div>
           </div>
@@ -42,7 +42,7 @@ export default function App() {
         {propertiesOpen && (
           <div className="fixed inset-0 z-50 flex justify-end xl:hidden">
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-overlay-in" onClick={closeProperties} />
-            <div className="relative h-full overflow-y-auto slide-from-right shadow-2xl">
+            <div className="relative h-full slide-from-right shadow-2xl">
               <PropertiesPanel circuit={circuit} onClose={closeProperties} />
             </div>
           </div>
